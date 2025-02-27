@@ -1,0 +1,27 @@
+from shiny import App, ui, render
+import matplotlib.pyplot as plt
+import numpy as np
+
+# UI - Interface do usuário
+app_ui = ui.page_fluid(
+    ui.h2("Meu Primeiro App Shiny com Python"),
+    ui.input_slider("n", "Número de pontos:", min=10, max=100, value=50),
+    ui.output_plot("plot")
+)
+
+# Server - Lógica do app
+def server(input, output, session):
+    
+    @output
+    @render.plot
+    def plot():
+        np.random.seed(42)
+        x = np.random.rand(input.n())
+        y = np.random.rand(input.n())
+        plt.scatter(x, y, c='blue', alpha=0.5)
+        plt.xlabel("X")
+        plt.ylabel("Y")
+        plt.title("Gráfico de pontos aleatórios")
+
+# Criar e rodar o app
+app = App(app_ui, server)
